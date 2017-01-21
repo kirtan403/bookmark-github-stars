@@ -1,0 +1,21 @@
+{
+  "name": "bookmark-github-starts",
+  "version": "1.0.0",
+  "description": "Bookmark your github starred repos",
+  "main": "module.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kirtan Thakkar",
+  "license": "MIT",
+  "dependencies": {
+    "netscape-bookmarks": "^0.1.0",
+    "parse-link-header": "^0.4.1",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kirtan403/bookmark-github-stars.git"
+  }
+}

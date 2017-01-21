@@ -1,0 +1,191 @@
+<html>
+
+<head>
+    <title> Github Stars to Bookmarks</title>
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- footer css -->
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo center">Bookmark Github Stars</a>
+                <!-- <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="sass.html">Sass</a></li>
+                <li><a href="badges.html">Components</a></li>
+                <li><a href="collapsible.html">JavaScript</a></li>
+            </ul> -->
+            </div>
+        </nav>
+    </header>
+    <main>
+
+        <div class="container">
+            <div class="row">
+                <br />
+            </div>
+            <div class="row">
+                <div class="col s1 m3 l4">
+                </div>
+                <div class="input-field col s10 m6 l4">
+                    <input id="github-username" type="text">
+                    <label for="github-username">Github username</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center">
+                    <div id="loading" class="preloader-wrapper small">
+                        <div class="spinner-layer spinner-green-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 center">
+                    <a id="fetch" class="waves-effect waves-light btn" onclick="fetchData()">Fetch</a>
+                </div>
+            </div>
+            <div class="row">
+                <br />
+                <p class="center">
+                    Note: This may take some depending on no of starred repos. Please be patient.
+                </p>
+            </div>
+            <div class="row">
+                <p class="center">
+                    Please enter the github username and click on FETCH to download the starred repositories as bookmarks export file.
+                </p>
+            </div>
+            <div class="row">
+                <p class="center">
+                    You can then use this to import on your browser bookmarks or on any of your favorite online bookmarking sites which supports import from the HTML bookmark file.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                <a class="grey-text text-lighten-4" href="#!">Github</a>
+                <div class="grey-text text-lighten-4 right">
+                    Developed by Kirtan Thakkar
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+
+        </div> -->
+    </footer>
+
+
+
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+
+    <script type="text/javascript" src="bookmark-github-stars-browser.js"></script>
+
+    <script>
+        // fetch starred project urls
+        function fetchData() {
+            var user = document.getElementById('github-username').value;
+            console.log('fetching for user: ' + user);
+            disableControls();
+            bookmarkGithubStars.getAllStarredRepos(user, function(err, data) {
+                enableControls();
+                if (err) {
+                    // An error
+                    console.log("There is an error");
+                    return;
+                }
+                uriContent = "data:application/octet-stream," + encodeURIComponent(data);
+                download("github-stars-" + user + ".html", data);
+            });
+        };
+
+        // enable
+        function enableControls() {
+            document.getElementById('github-username').disabled = false;
+            document.getElementById('fetch').classList.remove('disabled');
+            document.getElementById('loading').classList.remove('active');
+
+        }
+
+        // disable
+        function disableControls() {
+            document.getElementById('github-username').setAttribute('disabled', true);
+            document.getElementById('fetch').classList.add('disabled');
+            document.getElementById('loading').classList.add('active');
+
+
+        }
+
+        // downloads the file
+        function download(filename, text) {
+            var pom = document.createElement('a');
+            pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            pom.setAttribute('download', filename);
+
+            if (document.createEvent) {
+                var event = document.createEvent('MouseEvents');
+                event.initEvent('click', true, true);
+                pom.dispatchEvent(event);
+            } else {
+                pom.click();
+            }
+        }
+    </script>
+
+</body>
+
+</html>
