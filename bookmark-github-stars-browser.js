@@ -31260,15 +31260,15 @@ const rp = require('request-promise');
 const linkParser = require('parse-link-header');
 const netscape = require('netscape-bookmarks');
 
-let result = {};
 
-// getAllStartedRepos('kirtan403');
 
 /*
  *  fetch all the starred repos for the mentioned user
  */
 module.exports = {
     getAllStarredRepos: function(githubUser, callback) {
+
+        let result = {};
 
         // start with page 1
         getStarredPageData(1);
@@ -31296,9 +31296,10 @@ module.exports = {
 
                     // check if we need to parse again
                     let linkHeader = linkParser(response.headers.link);
-                    // console.log(linkHeader);
+                    console.log(linkHeader);
+                    console.log(response.headers.link);
 
-                    if (linkHeader.next) {
+                    if (linkHeader!= null && linkHeader.hasOwnProperty('next')) {
                         // get next page
                         getStarredPageData(linkHeader.next.page);
                     } else {
@@ -31320,7 +31321,6 @@ module.exports = {
 
 function generateHtmlExportFile(bookmarks) {
     var html = netscape(bookmarks);
-    console.log(html);
     return html;
 }
 
